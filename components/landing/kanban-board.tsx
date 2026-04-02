@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 
 const columns = [
   {
@@ -51,6 +51,24 @@ const offers = [
   {
     title: "PowerBI",
     body: "Dashboards and reporting layers that turn scattered business data into useful decision-making visibility.",
+  },
+];
+
+const teamMembers = [
+  {
+    image: "/Gideon.png",
+    name: "Gideon Harmse",
+    role: "Lead Developer",
+  },
+  {
+    image: "/Martin.png",
+    name: "Martin Harmse",
+    role: "Designer and Scrummaster",
+  },
+  {
+    image: "/Jason.png",
+    name: "Jason van den Heever",
+    role: "Social Media Manager",
   },
 ];
 
@@ -212,15 +230,66 @@ function WhatsAppIcon() {
   );
 }
 
+function TeamSection({
+  teamSectionRef,
+}: {
+  teamSectionRef: RefObject<HTMLElement | null>;
+}) {
+  return (
+    <section
+      ref={teamSectionRef}
+      className="mt-8 rounded-[2.4rem] bg-[linear-gradient(180deg,#163826_0%,#0b1d14_100%)] px-6 py-8 text-white shadow-[0_30px_80px_rgba(3,10,7,0.2)] md:px-8 md:py-10"
+    >
+      <div className="max-w-3xl">
+        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#d7ff28]">
+          Meet the team
+        </p>
+        <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl">
+          The people shaping codeform behind the scenes
+        </h2>
+      </div>
+
+      <div className="mt-8 grid gap-5 lg:grid-cols-3">
+        {teamMembers.map((member) => (
+          <article
+            key={member.name}
+            className="rounded-[2rem] border border-white/10 bg-white/6 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-sm"
+          >
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] bg-white/10">
+              <Image
+                alt={member.name}
+                className="object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                src={member.image}
+              />
+            </div>
+            <div className="mt-5">
+              <h3 className="text-2xl font-semibold tracking-[-0.04em] text-white">
+                {member.name}
+              </h3>
+              <p className="mt-2 text-sm font-medium uppercase tracking-[0.18em] text-[#d7ff28]">
+                {member.role}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Column({
   active,
   body,
+  onMeetTeam,
   onSelect,
   step,
   title,
 }: {
   active: boolean;
   body: string | string[];
+  onMeetTeam: () => void;
   onSelect: () => void;
   step: string;
   title: string;
@@ -330,6 +399,10 @@ function Column({
               </div>
               <button
                 className="mt-5 inline-flex rounded-full bg-[#153826] px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 sm:mt-6 sm:px-6"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onMeetTeam();
+                }}
                 type="button"
               >
                 Meet the team
@@ -397,109 +470,131 @@ function Column({
 export function KanbanBoard() {
   const [evolved, setEvolved] = useState(false);
   const [activePanel, setActivePanel] = useState("1");
+  const [showTeam, setShowTeam] = useState(false);
+  const teamSectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!showTeam) {
+      return;
+    }
+
+    teamSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [showTeam]);
+
+  const handleMeetTeam = () => {
+    setShowTeam(true);
+  };
 
   return (
-    <div
-      className={`grid min-h-[calc(100vh-3rem)] gap-6 transition-[grid-template-columns] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:gap-8 ${
-        evolved
-          ? "lg:grid-cols-[320px_minmax(0,1fr)]"
-          : "grid-cols-1"
-      }`}
-    >
-      <aside
-        className={`relative overflow-hidden rounded-[2.4rem] bg-[linear-gradient(180deg,#163826_0%,#0b1d14_100%)] px-6 text-white shadow-[0_30px_80px_rgba(3,10,7,0.32)] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:px-8 ${
+    <div className="space-y-8">
+      <div
+        className={`grid min-h-[calc(100vh-3rem)] gap-6 transition-[grid-template-columns] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:gap-8 ${
           evolved
-            ? "min-h-[8.5rem] py-5 lg:min-h-[calc(100vh-3rem)] lg:max-w-[320px] lg:py-10"
-            : "min-h-[12.5rem] py-6 md:min-h-[calc(100vh-3rem)] md:py-14"
+            ? "lg:grid-cols-[320px_minmax(0,1fr)]"
+            : "grid-cols-1"
         }`}
       >
-        <div
+        <aside
           className={`transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             evolved
-              ? "flex h-full items-center justify-center lg:flex"
-              : "mx-auto flex h-full max-w-2xl flex-col items-center justify-start pt-1 text-center md:justify-center"
+              ? "min-h-[8.5rem] py-5 lg:min-h-[calc(100vh-3rem)] lg:max-w-[320px] lg:py-10"
+              : "min-h-[12.5rem] py-6 md:min-h-[calc(100vh-3rem)] md:py-14"
           }`}
         >
-          {evolved ? (
-            <div className="flex h-full w-full items-center justify-center lg:flex">
-              <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-[#d7ff28] shadow-[0_18px_40px_rgba(183,241,13,0.18)] lg:h-40 lg:w-40">
-                <Image
-                  alt="Codeform logo"
-                  className="h-12 w-12 object-contain lg:h-24 lg:w-24"
-                  height={96}
-                  priority
-                  src="/codeform_logo_enhanced.png"
-                  width={96}
-                />
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] md:h-[4.5rem] md:w-[4.5rem]">
-                <Image
-                  alt="Codeform logo"
-                  className="h-8 w-8 object-contain md:h-10 md:w-10"
-                  height={40}
-                  src="/codeform_logo_enhanced.png"
-                  width={40}
-                />
-              </div>
-              <div className="mt-4 md:mt-12">
-                <h1 className="text-[2.2rem] font-semibold lowercase leading-[0.9] tracking-[-0.06em] text-[#d7ff28] md:text-8xl">
-                  codeform
-                </h1>
-                <div className="mt-4 hidden lg:block md:mt-8">
-                  <button
-                    className="inline-flex rounded-full bg-[#d7ff28] px-5 py-2.5 text-sm font-medium text-slate-950 transition-transform hover:-translate-y-0.5 md:px-8 md:py-4 md:text-xl"
-                    onClick={() => setEvolved(true)}
-                    type="button"
-                  >
-                    Click to evolve
-                  </button>
+          <div
+            className={`relative overflow-hidden rounded-[2.4rem] bg-[linear-gradient(180deg,#163826_0%,#0b1d14_100%)] px-6 text-white shadow-[0_30px_80px_rgba(3,10,7,0.32)] md:px-8 ${
+              evolved
+                ? "flex h-full items-center justify-center lg:flex"
+                : "mx-auto flex h-full max-w-2xl flex-col items-center justify-start pt-1 text-center md:justify-center"
+            }`}
+          >
+            {evolved ? (
+              <div className="flex h-full w-full items-center justify-center lg:flex">
+                <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-[#d7ff28] shadow-[0_18px_40px_rgba(183,241,13,0.18)] lg:h-40 lg:w-40">
+                  <Image
+                    alt="Codeform logo"
+                    className="h-12 w-12 object-contain lg:h-24 lg:w-24"
+                    height={96}
+                    priority
+                    src="/codeform_logo_enhanced.png"
+                    width={96}
+                  />
                 </div>
               </div>
-            </>
-          )}
-        </div>
-      </aside>
+            ) : (
+              <>
+                <div className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] md:h-[4.5rem] md:w-[4.5rem]">
+                  <Image
+                    alt="Codeform logo"
+                    className="h-8 w-8 object-contain md:h-10 md:w-10"
+                    height={40}
+                    src="/codeform_logo_enhanced.png"
+                    width={40}
+                  />
+                </div>
+                <div className="mt-4 md:mt-12">
+                  <h1 className="text-[2.2rem] font-semibold lowercase leading-[0.9] tracking-[-0.06em] text-[#d7ff28] md:text-8xl">
+                    codeform
+                  </h1>
+                  <div className="mt-4 hidden lg:block md:mt-8">
+                    <button
+                      className="inline-flex rounded-full bg-[#d7ff28] px-5 py-2.5 text-sm font-medium text-slate-950 transition-transform hover:-translate-y-0.5 md:px-8 md:py-4 md:text-xl"
+                      onClick={() => setEvolved(true)}
+                      type="button"
+                    >
+                      Click to evolve
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </aside>
 
-      <div
-        className={`relative transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          evolved
-            ? "translate-x-0 opacity-100"
-            : "translate-x-0 opacity-100 lg:pointer-events-none lg:translate-x-12 lg:opacity-0"
-        }`}
-      >
         <div
-          className="mobile-card-strip flex w-full min-w-0 gap-4 overflow-x-auto overflow-y-visible pb-3 snap-x snap-mandatory scroll-smooth md:grid md:gap-6 md:overflow-visible md:pb-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
-          style={{
-            WebkitOverflowScrolling: "touch",
-          }}
+          className={`relative transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            evolved
+              ? "translate-x-0 opacity-100"
+              : "translate-x-0 opacity-100 lg:pointer-events-none lg:translate-x-12 lg:opacity-0"
+          }`}
         >
-          {columns.map((column) => (
-            <div
-              key={column.title}
-              className={`shrink-0 snap-start overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                activePanel === column.step
-                  ? "w-[86vw] min-w-[86vw] max-w-[86vw]"
-                  : "w-[58vw] min-w-[58vw] max-w-[58vw]"
-              } md:min-w-0 md:max-w-none md:shrink md:w-auto lg:min-w-0 ${
-                activePanel === column.step
-                  ? "lg:flex-[4] lg:basis-[52%]"
-                  : "lg:flex-[0.55] lg:basis-[12%]"
-              }`}
-            >
-              <Column
-                active={activePanel === column.step}
-                body={column.body}
-                onSelect={() => setActivePanel(column.step)}
-                step={column.step}
-                title={column.title}
-              />
-            </div>
-          ))}
+          <div
+            className="mobile-card-strip flex w-full min-w-0 gap-4 overflow-x-auto overflow-y-visible pb-3 snap-x snap-mandatory scroll-smooth md:grid md:gap-6 md:overflow-visible md:pb-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
+            style={{
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
+            {columns.map((column) => (
+              <div
+                key={column.title}
+                className={`shrink-0 snap-start overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  activePanel === column.step
+                    ? "w-[86vw] min-w-[86vw] max-w-[86vw]"
+                    : "w-[58vw] min-w-[58vw] max-w-[58vw]"
+                } md:min-w-0 md:max-w-none md:shrink md:w-auto lg:min-w-0 ${
+                  activePanel === column.step
+                    ? "lg:flex-[4] lg:basis-[52%]"
+                    : "lg:flex-[0.55] lg:basis-[12%]"
+                }`}
+              >
+                <Column
+                  active={activePanel === column.step}
+                  body={column.body}
+                  onMeetTeam={handleMeetTeam}
+                  onSelect={() => setActivePanel(column.step)}
+                  step={column.step}
+                  title={column.title}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      {showTeam ? <TeamSection teamSectionRef={teamSectionRef} /> : null}
     </div>
   );
 }
