@@ -237,9 +237,9 @@ function Column({
 
   return (
     <section
-      className={`group flex min-h-[30rem] w-full overflow-hidden rounded-[2.25rem] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-h-[32rem] lg:min-h-[36rem] ${
+      className={`group flex min-h-[26rem] w-full max-w-full overflow-hidden rounded-[2.25rem] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-h-[32rem] lg:min-h-[36rem] ${
         active
-          ? "flex-col bg-[#e7ecef] px-5 py-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_22px_40px_rgba(21,56,38,0.08)] sm:px-7 sm:py-7"
+          ? "flex-col bg-[#e7ecef] px-4 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_22px_40px_rgba(21,56,38,0.08)] sm:px-7 sm:py-7"
           : "items-start bg-[#eef1f4] px-4 py-6 hover:bg-[#e9eef0] lg:flex-col lg:justify-start lg:px-3"
       }`}
       onClick={onSelect}
@@ -249,12 +249,12 @@ function Column({
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] text-xl font-semibold text-slate-950">
             {step}
           </div>
-          <h3 className="text-[1.75rem] font-semibold tracking-[-0.04em] text-[#153826] sm:text-3xl">
+          <h3 className="text-[1.45rem] font-semibold tracking-[-0.04em] text-[#153826] sm:text-3xl">
             {title}
           </h3>
         </div>
       ) : (
-        <div className="flex h-full min-h-[30rem] w-full flex-col items-center justify-between py-2 sm:min-h-[32rem] lg:min-h-[36rem]">
+        <div className="flex h-full min-h-[26rem] w-full flex-col items-center justify-between py-2 sm:min-h-[32rem] lg:min-h-[36rem]">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] text-xl font-semibold text-slate-950">
             {step}
           </div>
@@ -273,16 +273,16 @@ function Column({
           </div>
         </div>
       )}
-      <div className={`flex flex-1 flex-col justify-between ${active ? "mt-10" : "hidden"}`}>
+      <div className={`flex min-w-0 flex-1 flex-col justify-between ${active ? "mt-6 sm:mt-10" : "hidden"}`}>
         {isOffer ? null : (
           <div
             className={`transition-all duration-500 ${
               isAbout || isContact
                 ? active
-                  ? "mt-6 h-2 w-[10rem] rounded-full bg-[#d7ff28] shadow-[0_10px_22px_rgba(146,184,18,0.28)]"
+                  ? "mt-4 h-2 w-[8rem] rounded-full bg-[#d7ff28] shadow-[0_10px_22px_rgba(146,184,18,0.28)] sm:mt-6 sm:w-[10rem]"
                   : "mx-auto w-[82%] rounded-[1.75rem] bg-[linear-gradient(180deg,#d7ff28_0%,#b8f10d_100%)] px-3 py-4 text-slate-950 shadow-[0_18px_30px_rgba(146,184,18,0.22)]"
                 : active
-                  ? "mx-auto w-[82%] rotate-0 bg-[linear-gradient(180deg,#d7ff28_0%,#b8f10d_100%)] px-6 py-7 text-slate-950 shadow-[0_18px_30px_rgba(146,184,18,0.22)]"
+                  ? "mx-auto w-[82%] rotate-0 bg-[linear-gradient(180deg,#d7ff28_0%,#b8f10d_100%)] px-4 py-5 text-slate-950 shadow-[0_18px_30px_rgba(146,184,18,0.22)] sm:px-6 sm:py-7"
                   : "mx-auto w-[82%] rounded-[1.75rem] bg-[linear-gradient(180deg,#d7ff28_0%,#b8f10d_100%)] px-3 py-4 text-slate-950 shadow-[0_18px_30px_rgba(146,184,18,0.22)]"
             }`}
           >
@@ -317,22 +317,22 @@ function Column({
           {isOffer ? (
             <OfferBlocks expanded={active} />
           ) : isAbout ? (
-            <div className="mt-6">
-              <div className="space-y-4 text-base leading-7 text-[#153826]/78">
+            <div className="mt-4 max-w-full sm:mt-6">
+              <div className="space-y-3 break-words text-sm leading-6 text-[#153826]/78 sm:space-y-4 sm:text-base sm:leading-7">
                 {Array.isArray(body)
                   ? body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
                   : <p>{body}</p>}
               </div>
               <button
-                className="mt-6 inline-flex rounded-full bg-[#153826] px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+                className="mt-5 inline-flex rounded-full bg-[#153826] px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 sm:mt-6 sm:px-6"
                 type="button"
               >
                 Meet the team
               </button>
             </div>
           ) : isContact ? (
-            <div className="mt-8 max-w-[20rem] space-y-4 text-base leading-7 text-[#153826]/78">
-              <p className="text-base font-medium leading-7 text-[#153826]">
+            <div className="mt-6 max-w-full space-y-4 break-words text-sm leading-6 text-[#153826]/78 sm:mt-8 sm:max-w-[20rem] sm:text-base sm:leading-7">
+              <p className="text-sm font-medium leading-6 text-[#153826] sm:text-base sm:leading-7">
                 However you prefer - call, mail, WhatsApp. We&apos;re easy to reach, hard to ignore.
               </p>
               <p>
@@ -363,11 +363,11 @@ function Column({
               <ContactForm />
             </div>
           ) : isEvolve ? (
-            <div className="max-w-[24rem]">
+            <div className="max-w-full sm:max-w-[24rem]">
               <EvolveForm />
             </div>
           ) : (
-            <p className="mt-8 max-w-[18rem] text-base leading-7 text-[#153826]/78">
+            <p className="mt-6 max-w-full break-words text-sm leading-6 text-[#153826]/78 sm:mt-8 sm:max-w-[18rem] sm:text-base sm:leading-7">
               {body}
             </p>
           )}
@@ -476,7 +476,7 @@ export function KanbanBoard() {
           {columns.map((column) => (
             <div
               key={column.title}
-              className={`min-w-[76vw] shrink-0 snap-start transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-w-0 md:shrink lg:min-w-0 ${
+              className={`w-[72vw] min-w-[72vw] max-w-[72vw] shrink-0 snap-start overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-w-0 md:max-w-none md:shrink md:w-auto lg:min-w-0 ${
                 activePanel === column.step
                   ? "lg:flex-[4] lg:basis-[52%]"
                   : "lg:flex-[0.55] lg:basis-[12%]"
