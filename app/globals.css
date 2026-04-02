@@ -26,6 +26,15 @@ body {
   font-family: var(--font-geist-sans), sans-serif;
 }
 
+.mobile-card-strip {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.mobile-card-strip::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes dropDot {
   0% {
     opacity: 0;

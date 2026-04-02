@@ -428,7 +428,6 @@ export function KanbanBoard() {
                   src="/codeform_logo_enhanced.png"
                   width={96}
                 />
-                <span className="absolute bottom-[2.55rem] right-[2.2rem] h-3.5 w-3.5 rounded-full bg-slate-950" />
               </div>
             </div>
           ) : (
@@ -441,11 +440,10 @@ export function KanbanBoard() {
                   src="/codeform_logo_enhanced.png"
                   width={40}
                 />
-                <span className="absolute bottom-[1.08rem] right-[1rem] h-1.5 w-1.5 rounded-full bg-slate-950" />
               </div>
               <div className="mt-8 md:mt-12">
                 <h1 className="text-5xl font-semibold lowercase leading-[0.9] tracking-[-0.06em] text-[#d7ff28] md:text-8xl">
-                  codeform<span className="text-[1.1em]">.</span>
+                  codeform
                 </h1>
                 <div className="mt-6 md:mt-8">
                   <button
@@ -471,7 +469,11 @@ export function KanbanBoard() {
       >
         <div
           ref={mobileScrollerRef}
-          className="flex touch-pan-x gap-4 overflow-x-scroll pb-3 pr-20 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] md:grid md:gap-6 md:overflow-visible md:pb-0 md:pr-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
+          className="mobile-card-strip flex w-full min-w-0 touch-pan-x gap-4 overflow-x-auto pb-3 pr-20 snap-x snap-mandatory scroll-smooth select-none md:grid md:gap-6 md:overflow-visible md:pb-0 md:pr-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
+          style={{
+            WebkitOverflowScrolling: "touch",
+            overscrollBehaviorX: "contain",
+          }}
         >
           {columns.map((column) => (
             <div
@@ -493,7 +495,7 @@ export function KanbanBoard() {
           ))}
         </div>
 
-        <div className="pointer-events-none absolute bottom-5 right-1 flex items-center gap-2 md:hidden">
+        <div className="pointer-events-none fixed bottom-5 right-4 z-30 flex items-center gap-2 md:hidden">
           <span className="rounded-full bg-black px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_18px_30px_rgba(15,23,42,0.22)]">
             Swipe
           </span>
