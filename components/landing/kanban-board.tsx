@@ -471,7 +471,7 @@ export function KanbanBoard() {
       >
         <div
           ref={mobileScrollerRef}
-          className="flex gap-4 overflow-x-auto pb-3 pr-14 snap-x snap-mandatory md:grid md:gap-6 md:overflow-visible md:pb-0 md:pr-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
+          className="flex touch-pan-x gap-4 overflow-x-scroll pb-3 pr-20 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] md:grid md:gap-6 md:overflow-visible md:pb-0 md:pr-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
         >
           {columns.map((column) => (
             <div
@@ -493,14 +493,19 @@ export function KanbanBoard() {
           ))}
         </div>
 
-        <button
-          aria-label="Show more sections to the right"
-          className="absolute bottom-5 right-1 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#153826] text-xl text-white shadow-[0_18px_30px_rgba(21,56,38,0.22)] transition-transform hover:-translate-y-0.5 md:hidden"
-          onClick={scrollCardsRight}
-          type="button"
-        >
-          →
-        </button>
+        <div className="pointer-events-none absolute bottom-5 right-1 flex items-center gap-2 md:hidden">
+          <span className="rounded-full bg-black px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_18px_30px_rgba(15,23,42,0.22)]">
+            Swipe
+          </span>
+          <button
+            aria-label="Show more sections to the right"
+            className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-black text-xl text-white shadow-[0_18px_30px_rgba(15,23,42,0.22)] transition-transform hover:-translate-y-0.5"
+            onClick={scrollCardsRight}
+            type="button"
+          >
+            →
+          </button>
+        </div>
       </div>
     </div>
   );
