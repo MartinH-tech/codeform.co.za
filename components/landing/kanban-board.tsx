@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 const columns = [
   {
@@ -237,7 +237,7 @@ function Column({
 
   return (
     <section
-      className={`group flex min-h-[26rem] w-full max-w-full overflow-hidden rounded-[2.25rem] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-h-[32rem] lg:min-h-[36rem] ${
+      className={`group relative flex min-h-[22rem] w-full max-w-full overflow-hidden rounded-[2.25rem] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-h-[32rem] lg:min-h-[36rem] ${
         active
           ? "flex-col bg-[#e7ecef] px-4 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_22px_40px_rgba(21,56,38,0.08)] sm:px-7 sm:py-7"
           : "items-start bg-[#eef1f4] px-4 py-6 hover:bg-[#e9eef0] lg:flex-col lg:justify-start lg:px-3"
@@ -254,7 +254,7 @@ function Column({
           </h3>
         </div>
       ) : (
-        <div className="flex h-full min-h-[26rem] w-full flex-col items-center justify-between py-2 sm:min-h-[32rem] lg:min-h-[36rem]">
+        <div className="flex h-full min-h-[26rem] w-full flex-col items-center justify-between py-2 text-left sm:min-h-[32rem] lg:min-h-[36rem]">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] text-xl font-semibold text-slate-950">
             {step}
           </div>
@@ -275,7 +275,7 @@ function Column({
       )}
       <div className={`flex min-w-0 flex-1 flex-col justify-between ${active ? "mt-6 sm:mt-10" : "hidden"}`}>
         {isOffer ? null : (
-          <div
+          <button
             className={`transition-all duration-500 ${
               isAbout || isContact
                 ? active
@@ -285,6 +285,11 @@ function Column({
                   ? "mx-auto w-[82%] rotate-0 bg-[linear-gradient(180deg,#d7ff28_0%,#b8f10d_100%)] px-4 py-5 text-slate-950 shadow-[0_18px_30px_rgba(146,184,18,0.22)] sm:px-6 sm:py-7"
                   : "mx-auto w-[82%] rounded-[1.75rem] bg-[linear-gradient(180deg,#d7ff28_0%,#b8f10d_100%)] px-3 py-4 text-slate-950 shadow-[0_18px_30px_rgba(146,184,18,0.22)]"
             }`}
+            onClick={(event) => {
+              event.stopPropagation();
+              onSelect();
+            }}
+            type="button"
           >
             {(isAbout || isContact) && active ? null : (
               <>
@@ -297,14 +302,14 @@ function Column({
                   }`}
                 >
                   {isContact
-                    ? "However you prefer - call, mail, WhatsApp. We are easy to reach, hard to ignore."
+                    ? "Reach out"
                     : isEvolve
-                      ? "Get a free sample idea."
+                      ? "Start here"
                       : "Read more"}
                 </p>
               </>
             )}
-          </div>
+          </button>
         )}
 
         <div
@@ -348,7 +353,19 @@ function Column({
                 <span className="font-semibold text-[#153826]">
                   Call or WhatsApp:
                 </span>{" "}
-                0712802694 or 0646866099
+                <a
+                  className="font-medium text-[#153826] underline decoration-[#153826]/25 underline-offset-4"
+                  href="tel:0712802694"
+                >
+                  0712802694
+                </a>{" "}
+                or{" "}
+                <a
+                  className="font-medium text-[#153826] underline decoration-[#153826]/25 underline-offset-4"
+                  href="tel:0646866099"
+                >
+                  0646866099
+                </a>
               </p>
               <a
                 className="inline-flex items-center gap-3 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-[#0b1d14] transition-transform hover:-translate-y-0.5"
@@ -380,20 +397,6 @@ function Column({
 export function KanbanBoard() {
   const [evolved, setEvolved] = useState(false);
   const [activePanel, setActivePanel] = useState("1");
-  const mobileScrollerRef = useRef<HTMLDivElement | null>(null);
-
-  const scrollCardsRight = () => {
-    const container = mobileScrollerRef.current;
-
-    if (!container) {
-      return;
-    }
-
-    container.scrollBy({
-      left: Math.max(container.clientWidth * 0.78, 240),
-      behavior: "smooth",
-    });
-  };
 
   return (
     <div
@@ -406,23 +409,23 @@ export function KanbanBoard() {
       <aside
         className={`relative overflow-hidden rounded-[2.4rem] bg-[linear-gradient(180deg,#163826_0%,#0b1d14_100%)] px-6 text-white shadow-[0_30px_80px_rgba(3,10,7,0.32)] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:px-8 ${
           evolved
-            ? "min-h-[16rem] py-8 lg:min-h-[calc(100vh-3rem)] lg:max-w-[320px] lg:py-10"
-            : "min-h-[22rem] py-10 md:min-h-[calc(100vh-3rem)] md:py-14"
+            ? "min-h-[8.5rem] py-5 lg:min-h-[calc(100vh-3rem)] lg:max-w-[320px] lg:py-10"
+            : "min-h-[12.5rem] py-6 md:min-h-[calc(100vh-3rem)] md:py-14"
         }`}
       >
         <div
           className={`transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             evolved
-              ? "flex h-full items-center justify-center"
-              : "mx-auto flex h-full max-w-2xl flex-col items-center justify-center text-center"
+              ? "flex h-full items-center justify-center lg:flex"
+              : "mx-auto flex h-full max-w-2xl flex-col items-center justify-start pt-1 text-center md:justify-center"
           }`}
         >
           {evolved ? (
-            <div className="flex h-full w-full items-center justify-center">
-              <div className="relative flex h-40 w-40 items-center justify-center rounded-full bg-[#d7ff28] shadow-[0_18px_40px_rgba(183,241,13,0.18)]">
+            <div className="flex h-full w-full items-center justify-center lg:flex">
+              <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-[#d7ff28] shadow-[0_18px_40px_rgba(183,241,13,0.18)] lg:h-40 lg:w-40">
                 <Image
                   alt="Codeform logo"
-                  className="h-24 w-24 object-contain"
+                  className="h-12 w-12 object-contain lg:h-24 lg:w-24"
                   height={96}
                   priority
                   src="/codeform_logo_enhanced.png"
@@ -441,13 +444,13 @@ export function KanbanBoard() {
                   width={40}
                 />
               </div>
-              <div className="mt-8 md:mt-12">
-                <h1 className="text-5xl font-semibold lowercase leading-[0.9] tracking-[-0.06em] text-[#d7ff28] md:text-8xl">
+              <div className="mt-4 md:mt-12">
+                <h1 className="text-[2.2rem] font-semibold lowercase leading-[0.9] tracking-[-0.06em] text-[#d7ff28] md:text-8xl">
                   codeform
                 </h1>
-                <div className="mt-6 md:mt-8">
+                <div className="mt-4 hidden lg:block md:mt-8">
                   <button
-                    className="inline-flex rounded-full bg-[#d7ff28] px-6 py-3 text-base font-medium text-slate-950 transition-transform hover:-translate-y-0.5 md:px-8 md:py-4 md:text-xl"
+                    className="inline-flex rounded-full bg-[#d7ff28] px-5 py-2.5 text-sm font-medium text-slate-950 transition-transform hover:-translate-y-0.5 md:px-8 md:py-4 md:text-xl"
                     onClick={() => setEvolved(true)}
                     type="button"
                   >
@@ -464,21 +467,23 @@ export function KanbanBoard() {
         className={`relative transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           evolved
             ? "translate-x-0 opacity-100"
-            : "pointer-events-none translate-x-12 opacity-0"
+            : "translate-x-0 opacity-100 lg:pointer-events-none lg:translate-x-12 lg:opacity-0"
         }`}
       >
         <div
-          ref={mobileScrollerRef}
-          className="mobile-card-strip flex w-full min-w-0 touch-pan-x gap-4 overflow-x-auto pb-3 pr-20 snap-x snap-mandatory scroll-smooth select-none md:grid md:gap-6 md:overflow-visible md:pb-0 md:pr-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
+          className="mobile-card-strip flex w-full min-w-0 gap-4 overflow-x-auto overflow-y-visible pb-3 snap-x snap-mandatory scroll-smooth md:grid md:gap-6 md:overflow-visible md:pb-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
           style={{
             WebkitOverflowScrolling: "touch",
-            overscrollBehaviorX: "contain",
           }}
         >
           {columns.map((column) => (
             <div
               key={column.title}
-              className={`w-[72vw] min-w-[72vw] max-w-[72vw] shrink-0 snap-start overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-w-0 md:max-w-none md:shrink md:w-auto lg:min-w-0 ${
+              className={`shrink-0 snap-start overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                activePanel === column.step
+                  ? "w-[86vw] min-w-[86vw] max-w-[86vw]"
+                  : "w-[58vw] min-w-[58vw] max-w-[58vw]"
+              } md:min-w-0 md:max-w-none md:shrink md:w-auto lg:min-w-0 ${
                 activePanel === column.step
                   ? "lg:flex-[4] lg:basis-[52%]"
                   : "lg:flex-[0.55] lg:basis-[12%]"
@@ -493,20 +498,6 @@ export function KanbanBoard() {
               />
             </div>
           ))}
-        </div>
-
-        <div className="pointer-events-none fixed bottom-5 right-4 z-30 flex items-center gap-2 md:hidden">
-          <span className="rounded-full bg-black px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_18px_30px_rgba(15,23,42,0.22)]">
-            Swipe
-          </span>
-          <button
-            aria-label="Show more sections to the right"
-            className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-black text-xl text-white shadow-[0_18px_30px_rgba(15,23,42,0.22)] transition-transform hover:-translate-y-0.5"
-            onClick={scrollCardsRight}
-            type="button"
-          >
-            →
-          </button>
         </div>
       </div>
     </div>
