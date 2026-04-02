@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const columns = [
   {
@@ -66,7 +66,7 @@ function OfferBlocks({ expanded }: { expanded: boolean }) {
           return (
             <button
               key={offer.title}
-              className={`min-h-[4.25rem] rounded-2xl px-4 py-3 text-left text-sm font-semibold transition-all ${
+              className={`min-h-[3.5rem] rounded-2xl px-4 py-3 text-left text-sm font-semibold transition-all sm:min-h-[4.25rem] ${
                 active
                   ? "bg-[#d7ff28] text-slate-950 shadow-[0_12px_24px_rgba(146,184,18,0.22)]"
                   : "bg-[#c9f320] text-slate-950/85 hover:bg-[#d7ff28]"
@@ -85,14 +85,14 @@ function OfferBlocks({ expanded }: { expanded: boolean }) {
 
       <div
         className={`overflow-hidden transition-all duration-500 ${
-          expanded ? "mt-5 max-h-64 opacity-100" : "mt-0 max-h-0 opacity-0"
+          expanded ? "mt-4 max-h-52 opacity-100 sm:mt-5 sm:max-h-64" : "mt-0 max-h-0 opacity-0"
         }`}
       >
-        <div className="rounded-[1.5rem] bg-[#d7ff28] px-5 py-5 text-slate-950 shadow-[0_18px_30px_rgba(146,184,18,0.22)]">
+        <div className="rounded-[1.5rem] bg-[#d7ff28] px-4 py-4 text-slate-950 shadow-[0_18px_30px_rgba(146,184,18,0.22)] sm:px-5 sm:py-5">
           <p className="text-sm font-semibold uppercase tracking-[0.18em]">
             {activeOffer}
           </p>
-          <p className="mt-3 text-base leading-7">
+          <p className="mt-2 text-sm leading-6 sm:mt-3 sm:text-base sm:leading-7">
             {offers.find((offer) => offer.title === activeOffer)?.body}
           </p>
         </div>
@@ -237,9 +237,9 @@ function Column({
 
   return (
     <section
-      className={`group flex min-h-[36rem] w-full overflow-hidden rounded-[2.25rem] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`group flex min-h-[30rem] w-full overflow-hidden rounded-[2.25rem] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-h-[32rem] lg:min-h-[36rem] ${
         active
-          ? "flex-col bg-[#e7ecef] px-7 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_22px_40px_rgba(21,56,38,0.08)]"
+          ? "flex-col bg-[#e7ecef] px-5 py-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_22px_40px_rgba(21,56,38,0.08)] sm:px-7 sm:py-7"
           : "items-start bg-[#eef1f4] px-4 py-6 hover:bg-[#e9eef0] lg:flex-col lg:justify-start lg:px-3"
       }`}
       onClick={onSelect}
@@ -249,18 +249,18 @@ function Column({
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] text-xl font-semibold text-slate-950">
             {step}
           </div>
-          <h3 className="text-3xl font-semibold tracking-[-0.04em] text-[#153826]">
+          <h3 className="text-[1.75rem] font-semibold tracking-[-0.04em] text-[#153826] sm:text-3xl">
             {title}
           </h3>
         </div>
       ) : (
-        <div className="flex h-full min-h-[36rem] w-full flex-col items-center justify-between py-2">
+        <div className="flex h-full min-h-[30rem] w-full flex-col items-center justify-between py-2 sm:min-h-[32rem] lg:min-h-[36rem]">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] text-xl font-semibold text-slate-950">
             {step}
           </div>
-          <div className="flex flex-1 flex-col items-center justify-center gap-4 py-8">
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 py-6 sm:py-8">
             <div className="h-16 w-2 rounded-full bg-[#d7ff28] shadow-[0_10px_22px_rgba(146,184,18,0.22)]" />
-            <h3 className="text-center text-[1.7rem] font-semibold leading-[1.05] tracking-[-0.05em] text-[#153826]">
+            <h3 className="text-center text-[1.35rem] font-semibold leading-[1.05] tracking-[-0.05em] text-[#153826] sm:text-[1.7rem]">
               {title.split(" ").map((word) => (
                 <span key={word} className="block">
                   {word}
@@ -380,20 +380,34 @@ function Column({
 export function KanbanBoard() {
   const [evolved, setEvolved] = useState(false);
   const [activePanel, setActivePanel] = useState("1");
+  const mobileScrollerRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollCardsRight = () => {
+    const container = mobileScrollerRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    container.scrollBy({
+      left: Math.max(container.clientWidth * 0.78, 240),
+      behavior: "smooth",
+    });
+  };
 
   return (
     <div
-      className={`grid min-h-[calc(100vh-3rem)] gap-8 transition-[grid-template-columns] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`grid min-h-[calc(100vh-3rem)] gap-6 transition-[grid-template-columns] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:gap-8 ${
         evolved
           ? "lg:grid-cols-[320px_minmax(0,1fr)]"
           : "grid-cols-1"
       }`}
     >
       <aside
-        className={`relative overflow-hidden rounded-[2.4rem] bg-[linear-gradient(180deg,#163826_0%,#0b1d14_100%)] px-8 text-white shadow-[0_30px_80px_rgba(3,10,7,0.32)] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`relative overflow-hidden rounded-[2.4rem] bg-[linear-gradient(180deg,#163826_0%,#0b1d14_100%)] px-6 text-white shadow-[0_30px_80px_rgba(3,10,7,0.32)] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:px-8 ${
           evolved
-            ? "min-h-[calc(100vh-3rem)] py-10 lg:max-w-[320px]"
-            : "min-h-[calc(100vh-3rem)] py-14"
+            ? "min-h-[16rem] py-8 lg:min-h-[calc(100vh-3rem)] lg:max-w-[320px] lg:py-10"
+            : "min-h-[22rem] py-10 md:min-h-[calc(100vh-3rem)] md:py-14"
         }`}
       >
         <div
@@ -419,23 +433,23 @@ export function KanbanBoard() {
             </div>
           ) : (
             <>
-              <div className="relative mx-auto flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-[#d7ff28]">
+              <div className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] md:h-[4.5rem] md:w-[4.5rem]">
                 <Image
                   alt="Codeform logo"
-                  className="h-10 w-10 object-contain"
+                  className="h-8 w-8 object-contain md:h-10 md:w-10"
                   height={40}
                   src="/codeform_logo_enhanced.png"
                   width={40}
                 />
                 <span className="absolute bottom-[1.08rem] right-[1rem] h-1.5 w-1.5 rounded-full bg-slate-950" />
               </div>
-              <div className="mt-12">
-                <h1 className="text-7xl font-semibold lowercase leading-[0.9] tracking-[-0.06em] text-[#d7ff28] md:text-8xl">
+              <div className="mt-8 md:mt-12">
+                <h1 className="text-5xl font-semibold lowercase leading-[0.9] tracking-[-0.06em] text-[#d7ff28] md:text-8xl">
                   codeform<span className="text-[1.1em]">.</span>
                 </h1>
-                <div className="mt-8">
+                <div className="mt-6 md:mt-8">
                   <button
-                    className="inline-flex rounded-full bg-[#d7ff28] px-8 py-4 text-xl font-medium text-slate-950 transition-transform hover:-translate-y-0.5"
+                    className="inline-flex rounded-full bg-[#d7ff28] px-6 py-3 text-base font-medium text-slate-950 transition-transform hover:-translate-y-0.5 md:px-8 md:py-4 md:text-xl"
                     onClick={() => setEvolved(true)}
                     type="button"
                   >
@@ -449,30 +463,44 @@ export function KanbanBoard() {
       </aside>
 
       <div
-        className={`flex gap-6 overflow-x-auto pb-2 pr-2 snap-x snap-mandatory transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:grid md:overflow-visible md:pb-0 md:pr-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch ${
+        className={`relative transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           evolved
             ? "translate-x-0 opacity-100"
             : "pointer-events-none translate-x-12 opacity-0"
         }`}
       >
-        {columns.map((column) => (
-          <div
-            key={column.title}
-            className={`min-w-[82vw] shrink-0 snap-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-w-0 md:shrink lg:min-w-0 ${
-              activePanel === column.step
-                ? "lg:flex-[4] lg:basis-[52%]"
-                : "lg:flex-[0.55] lg:basis-[12%]"
-            }`}
-          >
-            <Column
-              active={activePanel === column.step}
-              body={column.body}
-              onSelect={() => setActivePanel(column.step)}
-              step={column.step}
-              title={column.title}
-            />
-          </div>
-        ))}
+        <div
+          ref={mobileScrollerRef}
+          className="flex gap-4 overflow-x-auto pb-3 pr-14 snap-x snap-mandatory md:grid md:gap-6 md:overflow-visible md:pb-0 md:pr-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
+        >
+          {columns.map((column) => (
+            <div
+              key={column.title}
+              className={`min-w-[76vw] shrink-0 snap-start transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-w-0 md:shrink lg:min-w-0 ${
+                activePanel === column.step
+                  ? "lg:flex-[4] lg:basis-[52%]"
+                  : "lg:flex-[0.55] lg:basis-[12%]"
+              }`}
+            >
+              <Column
+                active={activePanel === column.step}
+                body={column.body}
+                onSelect={() => setActivePanel(column.step)}
+                step={column.step}
+                title={column.title}
+              />
+            </div>
+          ))}
+        </div>
+
+        <button
+          aria-label="Show more sections to the right"
+          className="absolute bottom-5 right-1 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#153826] text-xl text-white shadow-[0_18px_30px_rgba(21,56,38,0.22)] transition-transform hover:-translate-y-0.5 md:hidden"
+          onClick={scrollCardsRight}
+          type="button"
+        >
+          →
+        </button>
       </div>
     </div>
   );
