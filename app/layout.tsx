@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: "codeform",
   description:
     "Modern landing pages, client portals, and internal systems built for brands that want a sharper digital presence.",
+  icons: {
+    icon: "/codeform_logo_enhanced.png",
+    apple: "/codeform_logo_enhanced.png",
+  },
 };
 
 export default function RootLayout({
