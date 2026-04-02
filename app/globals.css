@@ -10,6 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-ring: rgba(255, 255, 255, 0.35);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +23,86 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+@keyframes dropDot {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  10% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+
+  22% {
+    opacity: 0.55;
+    transform: scale(0.75);
+  }
+
+  34% {
+    opacity: 0.16;
+    transform: scale(0.45);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+}
+
+@keyframes dropRing {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  12% {
+    opacity: 0.5;
+    transform: scale(0.5);
+  }
+
+  30% {
+    opacity: 0.18;
+    transform: scale(3.2);
+  }
+
+  48% {
+    opacity: 0;
+    transform: scale(5.2);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(5.2);
+  }
+}
+
+@keyframes dropRingSoft {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  16% {
+    opacity: 0.22;
+    transform: scale(0.8);
+  }
+
+  38% {
+    opacity: 0.1;
+    transform: scale(6.4);
+  }
+
+  56% {
+    opacity: 0;
+    transform: scale(8);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(8);
+  }
 }
