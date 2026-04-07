@@ -525,6 +525,12 @@ export function KanbanBoard() {
               : "translate-x-0 opacity-100 lg:pointer-events-none lg:translate-x-12 lg:opacity-0"
           }`}
         >
+          <div className="mb-3 flex items-center justify-end gap-2 px-1 text-sm font-semibold text-black md:hidden">
+            <span>Swipe right</span>
+            <span aria-hidden="true" className="text-lg leading-none">
+              →
+            </span>
+          </div>
           <div
             className="mobile-card-strip flex w-full min-w-0 gap-4 overflow-x-auto overflow-y-visible pb-3 snap-x snap-mandatory scroll-smooth md:grid md:gap-6 md:overflow-visible md:pb-0 md:snap-none md:grid-cols-2 lg:flex lg:items-stretch"
             style={{
