@@ -1,7 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type RefObject } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type RefObject,
+} from "react";
 
 const columns = [
   {
@@ -23,11 +28,6 @@ const columns = [
     step: "3",
     title: "Contact us",
     body: "Start the conversation, share the challenge, and let us shape the right digital experience around your goals.",
-  },
-  {
-    step: "4",
-    title: "Ready to evolve?",
-    body: "Get a free sample idea. Let us sketch the next version of your brand before you commit to the full evolution.",
   },
 ];
 
@@ -58,7 +58,7 @@ const teamMembers = [
   {
     image: "/Gideon.png",
     name: "Gideon Harmse",
-    role: "Lead Developer",
+    role: "Software Engineer",
   },
   {
     image: "/Martin.png",
@@ -120,22 +120,56 @@ function OfferBlocks({ expanded }: { expanded: boolean }) {
 }
 
 function ContactForm() {
+  const nextUrl =
+    typeof window === "undefined"
+      ? ""
+      : `${window.location.origin}/thanks?form=contact`;
+
   return (
-    <form className="mt-6 space-y-4" onSubmit={(event) => event.preventDefault()}>
+    <form
+      action="https://formsubmit.co/info@codeform.co.za"
+      className="mt-6 space-y-4"
+      method="POST"
+      onClick={(event) => event.stopPropagation()}
+    >
+      <input name="_next" type="hidden" value={nextUrl} />
+      <input name="_subject" type="hidden" value="Codeform contact form submission" />
+      <input name="_template" type="hidden" value="table" />
+      <input name="_url" type="hidden" value="https://codeform.co.za/#contact" />
+      <input
+        aria-hidden="true"
+        autoComplete="off"
+        className="hidden"
+        name="_honey"
+        tabIndex={-1}
+        type="text"
+      />
       <div className="grid gap-4">
         <input
           className="rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
+          name="name"
           placeholder="Your name"
+          required
           type="text"
         />
         <input
           className="rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
+          name="email"
           placeholder="Email address"
+          required
           type="email"
+        />
+        <input
+          className="rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
+          name="cellphone"
+          placeholder="Cellphone number (optional)"
+          type="tel"
         />
         <textarea
           className="min-h-[8rem] rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
+          name="message"
           placeholder="Tell us what you need"
+          required
         />
       </div>
       <button
@@ -143,65 +177,6 @@ function ContactForm() {
         type="submit"
       >
         Submit online
-      </button>
-    </form>
-  );
-}
-
-function EvolveForm() {
-  return (
-    <form className="mt-8 space-y-4" onSubmit={(event) => event.preventDefault()}>
-      <div className="grid gap-4">
-        <textarea
-          className="min-h-[7rem] rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
-          placeholder="Tell us what you need"
-        />
-        <select className="rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none focus:border-[#153826]/25">
-          <option>Choose a service</option>
-          {offers.map((offer) => (
-            <option key={offer.title} value={offer.title}>
-              {offer.title}
-            </option>
-          ))}
-        </select>
-        <input
-          className="rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
-          placeholder="Name and surname"
-          type="text"
-        />
-        <input
-          className="rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
-          placeholder="Email address"
-          type="email"
-        />
-        <input
-          className="rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
-          placeholder="Cellphone number"
-          type="tel"
-        />
-        <input
-          className="rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
-          placeholder="Current website link"
-          type="url"
-        />
-        <label className="rounded-2xl border border-dashed border-[#153826]/20 bg-white px-4 py-4 text-sm text-[#153826]/70">
-          Upload a screenshot of your current website
-          <input className="mt-3 block w-full text-sm text-[#153826]" type="file" />
-        </label>
-        <label className="rounded-2xl border border-dashed border-[#153826]/20 bg-white px-4 py-4 text-sm text-[#153826]/70">
-          Upload an idea or reference you like
-          <input className="mt-3 block w-full text-sm text-[#153826]" type="file" />
-        </label>
-        <textarea
-          className="min-h-[8rem] rounded-2xl border border-[#153826]/10 bg-white px-4 py-3 text-sm text-[#153826] outline-none placeholder:text-[#153826]/45 focus:border-[#153826]/25"
-          placeholder="Tell us about your brand, your goals, and any ideas you already have in mind"
-        />
-      </div>
-      <button
-        className="inline-flex rounded-full bg-[#153826] px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
-        type="submit"
-      >
-        Request your sample idea
       </button>
     </form>
   );
@@ -297,12 +272,7 @@ function Column({
   const isAbout = title === "About us";
   const isOffer = title === "What we offer";
   const isContact = title === "Contact us";
-  const isEvolve = title === "Ready to evolve?";
-  const collapsedTeaser = isContact
-    ? "Reach out"
-    : isEvolve
-      ? "Start here"
-      : "Read more";
+  const collapsedTeaser = isContact ? "Reach out" : "Read more";
 
   return (
     <section
@@ -311,7 +281,7 @@ function Column({
           ? "flex-col bg-[#e7ecef] px-4 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_22px_40px_rgba(21,56,38,0.08)] sm:px-7 sm:py-7"
           : "items-start bg-[#eef1f4] px-4 py-6 hover:bg-[#e9eef0] lg:flex-col lg:justify-start lg:px-3"
       }`}
-      onClick={onSelect}
+      onClick={active ? undefined : onSelect}
     >
       {active ? (
         <div className="flex items-center gap-4">
@@ -363,7 +333,7 @@ function Column({
             {(isAbout || isContact) && active ? null : (
               <>
                 <div className={`mx-auto rounded-full border border-slate-600/45 ${active ? "h-8 w-8" : "h-6 w-6"}`} />
-                <p
+              <p
                   className={`mt-4 font-medium transition-all duration-500 ${
                     active
                       ? "text-center text-base leading-6 opacity-100"
@@ -372,9 +342,7 @@ function Column({
                 >
                   {isContact
                     ? "Reach out"
-                    : isEvolve
-                      ? "Start here"
-                      : "Read more"}
+                    : "Read more"}
                 </p>
               </>
             )}
@@ -452,10 +420,6 @@ function Column({
               <p>If you would rather not call or mail, submit your details below.</p>
               <ContactForm />
             </div>
-          ) : isEvolve ? (
-            <div className="max-w-full sm:max-w-[24rem]">
-              <EvolveForm />
-            </div>
           ) : (
             <p className="mt-6 max-w-full break-words text-sm leading-6 text-[#153826]/78 sm:mt-8 sm:max-w-[18rem] sm:text-base sm:leading-7">
               {body}
@@ -516,7 +480,7 @@ export function KanbanBoard() {
                 <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-[#d7ff28] shadow-[0_18px_40px_rgba(183,241,13,0.18)] lg:h-40 lg:w-40">
                   <Image
                     alt="Codeform logo"
-                    className="h-12 w-12 object-contain lg:h-24 lg:w-24"
+                    className="h-12 w-12 rounded-[1rem] object-contain opacity-95 shadow-[0_0_18px_rgba(255,255,255,0.18)] lg:h-24 lg:w-24 lg:rounded-[1.5rem]"
                     height={96}
                     priority
                     src="/codeform_logo_enhanced.png"
@@ -527,12 +491,12 @@ export function KanbanBoard() {
             ) : (
               <>
                 <div className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#d7ff28] md:h-[4.5rem] md:w-[4.5rem]">
-                  <Image
-                    alt="Codeform logo"
-                    className="h-8 w-8 object-contain md:h-10 md:w-10"
-                    height={40}
-                    src="/codeform_logo_enhanced.png"
-                    width={40}
+                <Image
+                  alt="Codeform logo"
+                  className="h-8 w-8 rounded-[0.75rem] object-contain opacity-95 shadow-[0_0_14px_rgba(255,255,255,0.16)] md:h-10 md:w-10 md:rounded-[1rem]"
+                  height={40}
+                  src="/codeform_logo_enhanced.png"
+                  width={40}
                   />
                 </div>
                 <div className="mt-4 md:mt-12">
